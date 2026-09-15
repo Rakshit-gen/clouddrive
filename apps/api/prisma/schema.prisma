@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  googleId  String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  files       File[]
+  sharesGiven FileShare[] @relation("SharesGiven")
+  sharesGot   FileShare[] @relation("SharesReceived")
+
+  @@map("users")
+}
+
+model File {
+  id           String   @id @default(uuid())
+  name         String
+  originalName String
+  mimeType     String
+  size         BigInt
+  s3Key        String   @unique
+  ownerId      String
+  owner        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  shares FileShare[]
+
+  @@index([ownerId])
+  @@index([ownerId, name])
+  @@map("files")
+}
+
+model FileShare {
+  id             String   @id @default(uuid())
+  fileId         String
+  file           File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  sharedById     String
+  sharedBy       User     @relation("SharesGiven", fields: [sharedById], references: [id], onDelete: Cascade)
+  sharedWithId   String
+  sharedWith     User     @relation("SharesReceived", fields: [sharedWithId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+
+  @@unique([fileId, sharedWithId])
+  @@index([sharedWithId])
+  @@map("file_shares")
+}
