@@ -177,11 +177,7 @@ Tests spin up the real Express app with Prisma and S3 mocked (no live database o
 docker compose up --build
 ```
 
-This starts Postgres and the API. Point `docker compose`'s `api` service at your Google OAuth and AWS credentials via `apps/api/.env` (copy from `.env.example` first, `docker-compose.yml` loads it with `env_file`). Run migrations against the containerized database with:
-
-```bash
-DATABASE_URL=postgresql://clouddrive:clouddrive@localhost:5432/clouddrive npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
-```
+This starts Postgres and the API. Point `docker compose`'s `api` service at your Google OAuth and AWS credentials via `apps/api/.env` (copy from `.env.example` first, `docker-compose.yml` loads it with `env_file`). The container runs `prisma migrate deploy` automatically on startup before the server boots, so no manual migration step is needed.
 
 The frontend is not containerized: it's a static build meant for Vercel/Netlify, and Docker isn't needed for that hosting model.
 
