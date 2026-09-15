@@ -13,7 +13,7 @@ services:
       - key: FRONTEND_URL
         value: https://clouddrive-one.vercel.app
       - key: GOOGLE_CALLBACK_URL
-        value: https://clouddrive-api-uumm.onrender.com/auth/google/callback
+        value: https://clouddrive-one.vercel.app/auth/google/callback
       - key: SESSION_SECRET
         generateValue: true
       - key: UPLOAD_TOKEN_SECRET
