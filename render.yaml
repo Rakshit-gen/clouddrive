@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: clouddrive-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    preDeployCommand: cd apps/api && npx prisma migrate deploy
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://clouddrive-one.vercel.app
+      - key: GOOGLE_CALLBACK_URL
+        value: https://clouddrive-api.onrender.com/auth/google/callback
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: UPLOAD_TOKEN_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_S3_BUCKET
+        sync: false
