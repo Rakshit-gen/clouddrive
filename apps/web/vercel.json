@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://clouddrive-api-uumm.onrender.com/api/:path*" },
-    { "source": "/auth/:path*", "destination": "https://clouddrive-api-uumm.onrender.com/auth/:path*" }
+    { "source": "/auth/:path*", "destination": "https://clouddrive-api-uumm.onrender.com/auth/:path*" },
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
