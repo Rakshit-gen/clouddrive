@@ -1,7 +1,12 @@
 import { toast } from 'sonner';
 import { queryClient } from '@/lib/queryClient';
 
-export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
+// ponytail: production builds default to a relative API base since vercel.json proxies
+// /api and /auth to the Render backend (same-origin, so the session cookie actually sticks
+// on iOS/Safari). Only dev mode needs the localhost:4000 fallback; VITE_API_URL still
+// overrides both if a deployment ever needs to point elsewhere.
+export const API_URL =
+  import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:4000');
 
 export class ApiRequestError extends Error {
   constructor(
