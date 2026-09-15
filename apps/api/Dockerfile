@@ -16,7 +16,7 @@ RUN npm run build -w apps/api
 
 FROM base AS runtime
 ENV NODE_ENV=production
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/apps/api/dist ./apps/api/dist
 COPY --from=build /app/apps/api/prisma ./apps/api/prisma
 COPY apps/api/package.json apps/api/package.json
